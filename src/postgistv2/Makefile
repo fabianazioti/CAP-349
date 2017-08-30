@@ -4,10 +4,10 @@ MODULE_big = postgistv2
 
 # As our extension uses multiple files, we have to
 # set OBJS
-OBJS = postgist.o hexutils.o trajectory.o
+OBJS = postgistv2.o trajectory.o
 
 # The extension name: geoext
-EXTENSION = postgist
+EXTENSION = postgistv2
 
 # Files that will be installed under prefix/share/geoext
 DATA = postgistv2--0.1.0.sql  # the script used to install the extension
