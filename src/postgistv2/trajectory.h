@@ -47,6 +47,9 @@ struct trajectory
 // #define PG_RETURN_TRAJECTORY_TYPE_P(x)  PG_RETURN_POINTER(x)
 
 extern Datum trajectory_elem_in(PG_FUNCTION_ARGS);
+
+// extern Datum LWGEOM_in(PG_FUNCTION_ARGS);
+
 extern Datum trajectory_elem(PG_FUNCTION_ARGS);
 extern Datum trajectory_elem_out(PG_FUNCTION_ARGS);
 extern Datum trajectory_elem_to_str(PG_FUNCTION_ARGS);

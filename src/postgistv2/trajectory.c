@@ -13,6 +13,17 @@
 #include <utils/lsyscache.h> /*construcao do array com o tipo*/
 
 
+PG_FUNCTION_INFO_V1(trajectory_elem_in);
+
+Datum
+trajectory_elem_in(PG_FUNCTION_ARGS)
+{
+  char *input = PG_GETARG_CSTRING(0);
+
+  struct trajectory_elem *trje = (struct trajectory_elem *) palloc(sizeof(struct trajectory_elem));
+
+  trje->geom_elem = DatumGetPointer(DirectFunctionCall1(LWGEOM_in, input));
+}
 
 PG_FUNCTION_INFO_V1(trajectory_elem);
 
@@ -23,30 +34,19 @@ trajectory_elem(PG_FUNCTION_ARGS)
   GSERIALIZED *geom = (GSERIALIZED*)PG_DETOAST_DATUM(PG_GETARG_DATUM(0));
 
   /*transforma para poder manipular*/
-  LWGEOM *lwgeom = lwgeom_from_gserialized(geom);
+  // LWGEOM *lwgeom = lwgeom_from_gserialized(geom);
 
-  elog(NOTICE, "sizeof(LWGEOM*) %d", sizeof(LWGEOM*));
-  elog(NOTICE, "lwgeom %d", sizeof(lwgeom));
+  struct trajectory_elem *trje = (struct trajectory_elem *) palloc(sizeof(struct trajectory_elem));
 
+  trje->geom_elem = lwgeom_from_gserialized(geom);
 
-  if ( lwgeom_is_empty(lwgeom))
+  if ( lwgeom_is_empty(trje->geom_elem))
   {
     PG_FREE_IF_COPY(geom, 0);
     PG_RETURN_NULL();
   }
 
 
-  char *hexwkb;
-  size_t hexwkb_size;
-
-  hexwkb = lwgeom_to_hexwkb(lwgeom, WKB_EXTENDED, &hexwkb_size);
-
-  elog(NOTICE, "sizeof %d ", strlen(hexwkb));
-  elog(NOTICE, "sizeof %d ", hexwkb_size);
-  elog(NOTICE, "%s", hexwkb);
-
-
-  lwgeom_free(lwgeom);
   PG_FREE_IF_COPY(geom, 0);
 
   elog(NOTICE, "trajectory_elem Finished");
