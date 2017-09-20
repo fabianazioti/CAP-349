@@ -1,0 +1,7 @@
+# pg_postgist
+# which will be installed into prefix/share/extension
+comment = 'postgistv2 extension'
+default_version = '0.1.0'
+requires = postgis
+module_pathname = '$libdir/postgistv2'
+relocatable = true
